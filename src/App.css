@@ -218,3 +218,9 @@ body{
     background-position: 800px 0;
   }
 }
+
+@media(max-width: 500px){
+  .sidebar{
+    display: none;
+  }
+}
