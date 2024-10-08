@@ -3,20 +3,33 @@ import "./App.css";
 import { Context } from "./context/context";
 
 const App = () => {
+  const {
+    onSent,
+    prevPrompt,
+    recentPrompt,
+    setRecentPrompt,
+    showResult,
+    loading,
+    resultData,
+    setInput,
+    input,
+  } = useContext(Context);
 
-  const {onSent,prevPromts,recentPrompt,setRecentPrompt,showResult,loading,resultData,setInput,input}= useContext(Context)
+  const loadPrompt = async (prompt) => {
+    setRecentPrompt(prompt);
+    await onSent(prompt);
+  };
 
-
-
-    const handleKeyDown = (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault(); // Prevent any default action (like form submission)
-            if (input.trim()) { // Check if input is not just whitespace
-                onSent(input); // Call the onSent function with the input value
-                setInput(""); // Clear the input field after sending
-            }
-        }
-    };
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent any default action (like form submission)
+      if (input.trim()) {
+        // Check if input is not just whitespace
+        onSent(input); // Call the onSent function with the input value
+        setInput(""); // Clear the input field after sending
+      }
+    }
+  };
 
   return (
     <div className="app">
@@ -26,22 +39,20 @@ const App = () => {
             <img src="./chatgpt.svg" alt="Logo" className="logo" />
             <span className="brand">ChatGPT</span>
           </div>
-          <button className="midbtn">
+          <button className="midbtn" onClick={() => window.location.reload()}>
             <img src="./add-30.png" alt="" className="addbtn" />
             New Chat
           </button>
-          <div className="upperside-bottom">
-  {Array.isArray(prevPromts) && prevPromts.map((item, index) => {
-    return (
-      <button key={index} className="query">
-        <img src="./message.svg" alt="Query" /> {item} ...
-      </button>
-    );
-  })}
-  <button className="query">
-    <img src="./message.svg" alt="Query" /> How to use an API
-  </button>
-</div>
+
+          <div  className="upperside-bottom" >
+          {prevPrompt.map((item, index) => {
+            return (
+                <button key={index} className="query" onClick={()=>loadPrompt(item)}>
+                  <img src="./message.svg" alt="Query" /> {item.slice(0, 25)}...
+                </button>
+            );
+          })}
+              </div>
         </div>
         <div className="lowerside">
           <div className="listitems">
@@ -59,34 +70,38 @@ const App = () => {
         </div>
       </div>
       <div className="main">
-
-
         <div className="chats">
           <div className="chat man">
             <img className="chatimg" src="./user-icon.png" alt="" />
-            <p className="txt">
-              {recentPrompt}
-            </p>
+            <p className="txt">{recentPrompt}</p>
           </div>
           <div className="chat bot">
             <img className="chatimg" src="./chatgptLogo.svg" alt="" />
-            {loading?<div className="loader">
-              <hr />
-              <hr />
-              <hr />
-            </div>:<p dangerouslySetInnerHTML={{__html:resultData}} className="txt result-data"></p>}
+            {loading ? (
+              <div className="loader">
+                <hr />
+                <hr />
+                <hr />
+              </div>
+            ) : (
+              <p
+                dangerouslySetInnerHTML={{ __html: resultData }}
+                className="txt result-data"
+              ></p>
+            )}
           </div>
         </div>
         <div className="chatfooter">
           <div className="inp">
-            <input 
-            onChange={(e)=>setInput(e.target.value)}
-            value={input}
-            onKeyDown={handleKeyDown} // Listen for keydown events
-            type="text" placeholder="Input your message" />
+            <input
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
+              onKeyDown={handleKeyDown} // Listen for keydown events
+              type="text"
+              placeholder="Input your message"
+            />
             <button className="send">
-              <img
-              onClick={()=>onSent()} src="./send.svg" alt="" />
+              <img onClick={() => onSent()} src="./send.svg" alt="" />
             </button>
           </div>
           <p>
