@@ -6,28 +6,52 @@ const App = () => {
   const {
     onSent,
     prevPrompt,
-    recentPrompt,
     setRecentPrompt,
-    showResult,
     loading,
-    resultData,
     setInput,
     input,
+    newChat,
   } = useContext(Context);
+
+  const [messages, setMessages] = useState([]); // State to hold all messages
 
   const loadPrompt = async (prompt) => {
     setRecentPrompt(prompt);
-    await onSent(prompt);
+    
+    // Create a message object for the prompt
+    const newMessage = { type: "user", text: prompt };
+    setMessages((prev) => [...prev, newMessage]); // Append the prompt to messages
+
+    // Send the prompt to the bot and await the response
+    const response = await onSent(prompt);
+    if (response) {
+      const botMessage = { type: "bot", text: response }; // Create bot message
+      setMessages((prev) => [...prev, botMessage]); // Append bot message
+    }
   };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      event.preventDefault(); // Prevent any default action (like form submission)
+      event.preventDefault();
       if (input.trim()) {
-        // Check if input is not just whitespace
-        onSent(input); // Call the onSent function with the input value
-        setInput(""); // Clear the input field after sending
+        handleSend(); // Call handleSend directly
       }
+    }
+  };
+
+  const handleSend = async () => {
+    if (input.trim()) {
+      const newMessage = { type: "user", text: input };
+      setMessages((prev) => [...prev, newMessage]); // Append user message
+
+      // Send input to the context's onSent function and await the response
+      const response = await onSent(input);
+      if (response) {
+        const botMessage = { type: "bot", text: response }; // Create bot message
+        setMessages((prev) => [...prev, botMessage]); // Append bot message
+      }
+
+      setInput(""); // Clear input field
     }
   };
 
@@ -39,20 +63,18 @@ const App = () => {
             <img src="./chatgpt.svg" alt="Logo" className="logo" />
             <span className="brand">ChatGPT</span>
           </div>
-          <button className="midbtn" onClick={() => window.location.reload()}>
+          <button className="midbtn" onClick={newChat}>
             <img src="./add-30.png" alt="" className="addbtn" />
             New Chat
           </button>
 
-          <div  className="upperside-bottom" >
-          {prevPrompt.map((item, index) => {
-            return (
-                <button key={index} className="query" onClick={()=>loadPrompt(item)}>
-                  <img src="./message.svg" alt="Query" /> {item.slice(0, 25)}...
-                </button>
-            );
-          })}
-              </div>
+          <div className="upperside-bottom">
+            {prevPrompt.map((item, index) => (
+              <button key={index} className="query" onClick={() => loadPrompt(item)}>
+                <img src="./message.svg" alt="Query" /> {item.slice(0, 25)}...
+              </button>
+            ))}
+          </div>
         </div>
         <div className="lowerside">
           <div className="listitems">
@@ -71,42 +93,35 @@ const App = () => {
       </div>
       <div className="main">
         <div className="chats">
-          <div className="chat man">
-            <img className="chatimg" src="./user-icon.png" alt="" />
-            <p className="txt">{recentPrompt}</p>
-          </div>
-          <div className="chat bot">
-            <img className="chatimg" src="./chatgptLogo.svg" alt="" />
-            {loading ? (
-              <div className="loader">
-                <hr />
-                <hr />
-                <hr />
-              </div>
-            ) : (
-              <p
-                dangerouslySetInnerHTML={{ __html: resultData }}
-                className="txt result-data"
-              ></p>
-            )}
-          </div>
+          {messages.map((msg, index) => (
+            <div key={index} className={`chat ${msg.type}`}>
+              <img className="chatimg" src={msg.type === "user" ? "./user-icon.png" : "./chatgptLogo.svg"} alt="" />
+              <p className="txt" dangerouslySetInnerHTML={{ __html: msg.text }}></p>
+            </div>
+          ))}
+          {loading && (
+            <div className="loader">
+              <hr />
+              <hr />
+              <hr />
+            </div>
+          )}
         </div>
         <div className="chatfooter">
           <div className="inp">
             <input
               onChange={(e) => setInput(e.target.value)}
               value={input}
-              onKeyDown={handleKeyDown} // Listen for keydown events
+              onKeyDown={handleKeyDown}
               type="text"
               placeholder="Input your message"
             />
-            <button className="send">
-              <img onClick={() => onSent()} src="./send.svg" alt="" />
+            <button className="send" onClick={handleSend}>
+              <img src="./send.svg" alt="" />
             </button>
           </div>
           <p>
-            ChatGPT may produce inaccurate information about people, places, or
-            facts. ChatGPT September 3rd version.
+            ChatGPT may produce inaccurate information about people, places, or facts. ChatGPT September 3rd version.
           </p>
         </div>
       </div>
