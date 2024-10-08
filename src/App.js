@@ -31,19 +31,17 @@ const App = () => {
             New Chat
           </button>
           <div className="upperside-bottom">
-            {
-              prevPromts.map((item,index)=>{
-                return(
-            <button className="query">
-              <img src="./message.svg" alt="Query" /> {item} ...
-            </button>
-                )
-              })
-            }
-            <button className="query">
-              <img src="./message.svg" alt="Query" /> How to use an API
-            </button>
-          </div>
+  {Array.isArray(prevPromts) && prevPromts.map((item, index) => {
+    return (
+      <button key={index} className="query">
+        <img src="./message.svg" alt="Query" /> {item} ...
+      </button>
+    );
+  })}
+  <button className="query">
+    <img src="./message.svg" alt="Query" /> How to use an API
+  </button>
+</div>
         </div>
         <div className="lowerside">
           <div className="listitems">
