@@ -19,12 +19,7 @@ const ContextProvider = (props) => {
 
     // Function to reset chat state
     const newChat = () => {
-        setInput('');
-        setRecentPrompt('');
-        setPrevPrompt([]); // Clear previous prompts
-        setResultData(''); // Clear result data
-        setShowResult(false); // Hide result display
-        setLoading(false); // Reset loading state
+       window.location.reload()
     };
 
     const onSent = async (prompt) => {
