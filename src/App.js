@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Context } from "./context/context";
 
@@ -14,6 +14,7 @@ const App = () => {
   } = useContext(Context);
 
   const [messages, setMessages] = useState([]); // State to hold all messages
+  const chatEndRef = useRef(null); // Create a ref for the chat end
 
   const loadPrompt = async (prompt) => {
     setRecentPrompt(prompt);
@@ -54,6 +55,10 @@ const App = () => {
       setInput(""); // Clear input field
     }
   };
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="app">
@@ -99,6 +104,11 @@ const App = () => {
               <p className="txt" dangerouslySetInnerHTML={{ __html: msg.text }}></p>
             </div>
           ))}
+          {
+            messages && (
+              <p>Hello</p>
+            )
+          }
           {loading && (
             <div className="loader">
               <hr />
@@ -106,6 +116,7 @@ const App = () => {
               <hr />
             </div>
           )}
+            <div ref={chatEndRef} />
         </div>
         <div className="chatfooter">
           <div className="inp">
