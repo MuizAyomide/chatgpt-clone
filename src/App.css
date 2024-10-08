@@ -66,6 +66,16 @@ body{
   margin: 0 auto;
   margin-bottom: 3rem;
   border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.upperside-bottom{
+  overflow-y: scroll;
+  height: 300px;
+}
+
+.upperside-bottom::-webkit-scrollbar{
+  display: none;
 }
 
 .query{
@@ -78,6 +88,10 @@ body{
   border-radius: 0.5rem;
   color: rgba(222, 222, 222, 1);
   border: 1px solid rgba(98, 98, 98, 1);
+}
+
+.query:hover{
+  background: #3532f331;
 }
 
 .query img{
