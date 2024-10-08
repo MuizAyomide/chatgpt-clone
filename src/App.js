@@ -104,11 +104,6 @@ const App = () => {
               <p className="txt" dangerouslySetInnerHTML={{ __html: msg.text }}></p>
             </div>
           ))}
-          {
-            messages && (
-              <p>Hello</p>
-            )
-          }
           {loading && (
             <div className="loader">
               <hr />
