@@ -15,6 +15,7 @@ const App = () => {
 
   const [messages, setMessages] = useState([]); // State to hold all messages
   const chatEndRef = useRef(null); // Create a ref for the chat end
+  const [expand, setExpand] = useState(false)
 
   const loadPrompt = async (prompt) => {
     setRecentPrompt(prompt);
@@ -62,11 +63,17 @@ const App = () => {
 
   return (
     <div className="app">
+       {
+          expand === true ?
       <div className="sidebar">
+      
         <div className="upperside">
+          <div className="top-upperside">
           <div className="upperside-top">
             <img src="./chatgpt.svg" alt="Logo" className="logo" />
             <span className="brand">ChatGPT</span>
+          </div>
+          <img src="close.png" alt="" className="close" onClick={()=>setExpand(false)} />
           </div>
           <button className="midbtn" onClick={newChat}>
             <img src="./add-30.png" alt="" className="addbtn" />
@@ -96,6 +103,9 @@ const App = () => {
           </div>
         </div>
       </div>
+      :
+      <img src="menu-icon.png" alt="" className="menu-icon" onClick={()=>setExpand(true)} />
+          }
       <div className="main">
         <div className="chats">
           {messages.map((msg, index) => (
