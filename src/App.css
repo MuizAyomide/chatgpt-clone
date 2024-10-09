@@ -252,6 +252,14 @@ body{
 
 @media(max-width: 500px){
   .sidebar{
-    display: none;
+    /* display: none; */
+  }
+
+  .sidebar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: #0b0b0c;
   }
 }
