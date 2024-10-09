@@ -63,6 +63,9 @@ const App = () => {
 
   return (
     <div className="app">
+
+      <div className="bar">
+
        {
           expand === true ?
       <div className="sidebar">
@@ -106,6 +109,7 @@ const App = () => {
       :
       <img src="menu-icon.png" alt="" className="menu-icon" onClick={()=>setExpand(true)} />
           }
+      </div>
       <div className="main">
         <div className="chats">
           {messages.map((msg, index) => (
