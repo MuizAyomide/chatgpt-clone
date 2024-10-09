@@ -53,10 +53,10 @@ body{
   cursor: pointer;
 }
 
-.menu-icon{
-  width: 30px;
-  height: 100%;
-  margin: 30px;
+.bar .menu-icon{
+  width: 40px;
+  /* height: 100%; */
+  margin: 20px;
 }
 
 .upperside-top{
@@ -261,5 +261,10 @@ body{
     left: 0;
     z-index: 10;
     background-color: #0b0b0c;
+
+  }
+
+  .bar{
+    border-right: 1px solid #fff;
   }
 }
