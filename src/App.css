@@ -12,10 +12,12 @@ body{
   background: rgb(3, 0 ,31);
   font-family: 'Poppins', sans-serif;
   color: #fff;
+  
 }
 
 .app{
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   display: flex;
 }
 
@@ -51,6 +53,10 @@ body{
   width: 30px;
   height: 30px;
   cursor: pointer;
+}
+
+.bar{
+  border-right: 1px solid #fff;
 }
 
 .bar .menu-icon{
@@ -138,7 +144,7 @@ body{
 }
 
 .main{
-  min-height: calc(100vh - 14rem);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   margin: 6rem auto;
@@ -152,7 +158,7 @@ body{
   scroll-behavior: smooth;
   width: 100%;
   max-width: 70rem;
-  height: calc(100vh - 17rem);
+  height: 100%;
 }
 
 .chat{
@@ -260,11 +266,13 @@ body{
     top: 0;
     left: 0;
     z-index: 10;
-    background-color: #0b0b0c;
+    background-color: #010131e5;
 
   }
-
-  .bar{
-    border-right: 1px solid #fff;
+  .app{
+   height: 100vh;
+    display: flex;
   }
+
+  
 }
